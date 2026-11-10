@@ -1,0 +1,15 @@
+{
+  "name": "hermes-openrouter-provider-tests",
+  "private": true,
+  "type": "module",
+  "description": "jsdom harness for the plugin's desktop UI",
+  "scripts": {
+    "test": "node test_desktop_ui.mjs"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.3",
+    "jsdom": "^29.1.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  }
+}

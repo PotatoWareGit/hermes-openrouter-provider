@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Test scaffolding
+tests/node_modules/
+tests/plugin.under-test.mjs
+
+# macOS
+.DS_Store
