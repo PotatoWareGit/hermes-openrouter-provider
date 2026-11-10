@@ -1,6 +1,6 @@
-# Hermes OpenRouter Provider Routing
+# OpenRouter Provider Picker
 
-![OpenRouter Provider Routing — pick which upstream provider serves each model](assets/banner.png)
+![OpenRouter Provider Picker — pick which upstream provider serves each model](assets/banner.png)
 
 A [Hermes Agent](https://github.com/NousResearch/hermes-agent) plugin for picking **which upstream
 providers serve each OpenRouter model** — per model, from a desktop UI or from an agent tool.
