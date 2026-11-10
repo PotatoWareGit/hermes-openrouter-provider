@@ -153,6 +153,47 @@ Always finish by asking Hermes to re-read the plugin:
 hermes plugins doctor hermes-openrouter-provider
 ```
 
+## Publishing it
+
+Three routes, in increasing order of reach. All three need the repo to be **public** first
+(Settings ▸ General ▸ Danger Zone ▸ Change visibility).
+
+**1. Direct git install** — works the moment the repo is public, no review, no listing:
+
+```bash
+hermes plugins install PotatoWareGit/hermes-openrouter-provider
+hermes plugins enable openrouter-provider-picker
+```
+
+That is a real, supported install path; people just have to be told the URL.
+
+**2. The plugin catalog** — the actual "publish". Users then find it with `hermes plugins search`
+or `hermes plugins browse`, install it by name, and get a page at
+`https://hermes-agent.nousresearch.com/docs/plugins/openrouter-provider-picker`. Admission is a
+human-reviewed PR against [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent):
+
+1. Fork that repo, add `plugin-catalog/openrouter-provider-picker.yaml` (copy
+   [`distribution/catalog-entry.example.yaml`](distribution/catalog-entry.example.yaml)), pinning a
+   full 40-character `sha` of this repo.
+2. Open the PR with what the plugin does, which surfaces it uses, and the disclosure line — plus a
+   screenshot, since it has a UI.
+3. Catalog CI clones this repo at the pinned commit and runs `hermes plugins validate --install-deps`.
+   It already passes locally (manifest, loadability, declared-vs-actual capabilities, security scan,
+   desktop-surface and core-override rules).
+4. A maintainer reviews the pinned tree and merges. Later releases are new PRs that bump `sha` and
+   `version` together; `hermes plugins update` then moves people to the reviewed commit.
+
+The pin *is* the trust model, so a listed plugin must not self-update (this one doesn't).
+
+**3. PyPI** — only worth it if you want `pip install` as well. Expose an entry point:
+
+```toml
+[project.entry-points."hermes_agent.plugins"]
+openrouter-provider-picker = "your_package:register"
+```
+
+Hermes discovers it but never imports it without the plugin being listed in `plugins.enabled`.
+
 ## Scope
 
 OpenRouter only. Nous Portal decides routing centrally per model and rejects caller-supplied
