@@ -41,9 +41,37 @@ guidance was literally “edit `config.yaml` directly for these keys”. This pl
   openrouter_provider_routing(action="clear", model="openai/gpt-6-astra")
   ```
 
-Changes are written to the active profile's `config.yaml` and apply to the next request. Only what
-you set is written: an untouched model inherits the flat defaults, and clearing the last pin removes
-the `models` key entirely.
+Only what you set is written: an untouched model inherits the flat defaults, and clearing the last
+pin removes the `models` key entirely. **When** a change takes effect differs between pins and
+defaults — see [When a change takes effect](#when-a-change-takes-effect).
+
+## When a change takes effect
+
+`provider_routing` is read in two places at two different times, so the two halves behave
+differently. Measured against `agent/chat_completion_helpers.py::_provider_preferences_for_agent`,
+which merges the flat values held by the live `AIAgent` with the `models` overlay read fresh from
+`config.yaml` on every call:
+
+| You edited | A chat that is already running | The next new session |
+|---|---|---|
+| A per-model pin (`models.<id>`) | **Applies on the next request.** No restart, no new chat | Applies |
+| The flat defaults (`sort`, `only`, `ignore`, `order`, `require_parameters`, `data_collection`) | **Not picked up.** The session keeps the values it was constructed with | Applies |
+
+In one running session that means:
+
+- write `models."deepseek/deepseek-v4.1-flash-1017": {only: [stepfun]}` → the very next turn is
+  routed through `stepfun`;
+- delete that pin → the next turn is back on the session's own defaults;
+- write a flat `sort: throughput` → this session keeps routing as it did, and the change lands in
+  your next chat.
+
+The split explains the Hermes docs' line that "open sessions keep the values they were created
+with": that describes the flat block. Pins are the exception, because they are re-read per request.
+For messaging (gateway) turns the docs add that those use the config copy loaded when the gateway
+starts.
+
+Nothing here needs a Hermes restart to take effect for pins, and nothing here can change the routing
+of a turn that is already in flight.
 
 ## Install
 

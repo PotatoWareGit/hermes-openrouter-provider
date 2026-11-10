@@ -1,5 +1,5 @@
 name: openrouter-provider-picker
-version: 1.0.0
+version: 1.0.1
 description: "Choose which upstream providers serve each OpenRouter model. Ships a desktop UI (Settings ▸ Plugins ▸ Provider Routing) and an `openrouter_provider_routing` tool that reads and writes provider_routing / provider_routing.models.<id> in config.yaml — the keys Hermes' request path actually reads."
 author: "PotatoWareGit"
 requires_hermes: ">=0.23.0"

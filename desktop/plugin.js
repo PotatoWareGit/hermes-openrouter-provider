@@ -26,6 +26,7 @@ const EN = {
   docs: 'How routing works',
   flatTitle: 'Defaults for every model',
   flatHint: 'Left on “OpenRouter default”, routing stays the aggregator’s own choice.',
+  flatTiming: 'Flat defaults apply from your next session — a running chat keeps the routing it started with. Per-model pins apply immediately.',
   sort: 'Rank providers by',
   sortDefault: 'OpenRouter default',
   sortPrice: 'Price',
@@ -270,6 +271,7 @@ function FlatDefaults({ api, flat, onSaved }) {
     children: [
       jsx('div', { className: 'orpp-card-title', children: t('flatTitle') }),
       jsx('div', { className: 'orpp-hint', children: t('flatHint') }),
+      jsx('div', { className: 'orpp-hint', children: t('flatTiming') }),
       jsxs('div', {
         className: 'orpp-row',
         children: [

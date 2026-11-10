@@ -61,7 +61,10 @@ TOOL_SCHEMA = {
         "  providers — which upstream providers serve one model (live from OpenRouter)\n"
         "  set       — write an override for one model; omit a key to leave it inheriting\n"
         "  clear     — delete one model's override\n"
-        "Writes land in config.yaml and apply to the next request."
+        "A per-model override takes effect on the next request, even in a chat that is already "
+        "running: Hermes re-reads the models block per request. Flat defaults are baked into a "
+        "session when it is constructed, so they apply from the next new session, not the current "
+        "chat. Pass apply_to='flat' only for that wider change."
     ),
     "parameters": {
         "type": "object",
